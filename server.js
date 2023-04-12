@@ -19,11 +19,32 @@ app.get("/", (req, res) => {
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname,"./Develop/public/notes.html"))
 })
-
+app.get("api/notes", (req, res) => {
+    res.json(allNotes.slice(1))
+})
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "./Develop/pubic/index.html"))
 })
 
-function newNote(body, )
+function newNote(body, newNoteItem) {
+    const noteSection = body
+    if(!Array.isArray(newNoteItem)) newNoteItem = []
+    if(newNoteItem.length === 0) newNoteItem.push(0)
+    body.id = newNoteItem[0]
+    newNoteItem[0] = newNoteItem[0] + 1
 
+    newNoteItem.push(noteSection)
+    fs.writeFileSync(
+        path.join(__dirname, "./Develop/db/db.json"),
+        JSON.stringify(newNoteItem, null, 2)
+    )
+    return noteSection
+}
+app.post("api/notes", (req, res) => {
+    const noteSection = newNote(req.body, notes)
+    res.json(noteSection)
+})
 
+app.listen(PORT, () => {
+    console.log(`see port ${PORT}`)
+})

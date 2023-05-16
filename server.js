@@ -11,10 +11,10 @@ const notes = require("./Develop/db/db.json")
 app.use(express.urlencoded({ extend : true}))
 app.use(express.json())
 
-app.use(expess.static("public")) // uses the public directory
+app.use(express.static("public")) // uses the public directory
 
 app.get("/", (req, res) => {
-    res.readFile(path.join(__dirname, "./Develop/public/index.html"))
+    res.sendFile(path.join(__dirname, "./Develop/public/index.html"))
 })
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname,"./Develop/public/notes.html"))
